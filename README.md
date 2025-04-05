@@ -1,4 +1,4 @@
-
+ 
 # 🧠 Mahi-Pedia — Wikipedia Search App
 
 Mahi-Pedia is a simple and responsive web application that allows users to search for Wikipedia articles in real-time. Built using **HTML, CSS, JavaScript, and Bootstrap**, it fetches results from the [CCBP Wiki Search API](https://apis.ccbp.in/wiki-search) and displays titles, descriptions, and clickable links.
