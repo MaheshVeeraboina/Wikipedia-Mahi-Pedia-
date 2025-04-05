@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous" />
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js" integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js" integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8shuf57BaghqFfPlYxofvL8/KUEfYiJOMMV+rV" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="style.css" />
+    
+    <title>Mahi-Pedia</title>
+
+</head>
+
+<body>
+    <div class="main-container">
+        <div class="wiki-search-header text-center">
+            <img class="wiki-logo" src="https://d1tgh8fmlzexmh.cloudfront.net/ccbp-dynamic-webapps/wiki-logo-img.png" />
+            <h1 class="mahi">Mahi-Pedia</h1>
+            <input placeholder="Type a keyword and press Enter to search" type="search" class="search-input w-100" id="searchInput" />
+        </div>
+        <div class="d-none" id="spinner">
+            <div class="d-flex justify-content-center">
+                <div class="spinner-border" role="status">
+                </div>
+            </div>
+        </div>
+        <div class="search-results" id="searchResults"></div>
+    </div>
+    <script>
+        let search=document.getElementById("searchInput");
+let spinner=document.getElementById("spinner");
+let searchResults=document.getElementById("searchResults");
+
+function createAndAppend(i){
+            let {title,link,description}=i;
+            
+            let div=document.createElement("div");
+            div.classList.add("result-item");
+            searchResults.appendChild(div);
+            
+            let a=document.createElement("a");
+            a.classList.add("result-title");
+            a.href=link;
+            a.target="_blank";
+            a.textContent=title;
+            div.appendChild(a);
+            
+            let br1=document.createElement("br");
+            div.appendChild(br1);
+            
+            let linkk=document.createElement("a");
+            linkk.classList.add('result-url');
+            linkk.href=link;
+            linkk.target="_blank";
+            linkk.textContent=link;
+            div.appendChild(linkk);
+            
+            let br2=document.createElement("br");
+            div.appendChild(br2);
+            
+            let desc=document.createElement("p");
+            desc.classList.add("link-description");
+            desc.textContent=description;
+            div.appendChild(desc);
+            
+        }
+
+        function display(search_results){
+            spinner.classList.toggle('d-none');
+            for (let i of search_results){
+                createAndAppend(i);
+            }
+        }
+
+        function searchInput(event){
+            if (event.key==="Enter"){
+                spinner.classList.toggle('d-none');
+                searchResults.textContent="";
+                let Input=search.value;
+                let url="https://apis.ccbp.in/wiki-search?search="+Input;
+                let options={
+                    method:"GET"
+                };
+                fetch(url,options)
+                .then(function(response){
+                    return response.json();
+                }).then(function(m){
+                    let {search_results}=m;
+                    display(search_results);
+                });
+            }
+        }
+        search.addEventListener("keydown",searchInput);
+    </script>
+</body>
+
+</html>
